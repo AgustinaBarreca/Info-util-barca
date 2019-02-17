@@ -1,0 +1,19 @@
+http://w3.unpocodetodo.info/canvas/responsive.php
+
+OTRA SOLUCION:
+
+ var canvas = new fabric.Canvas('c');
+(function(){
+  //var canvas = new fabric.Canvas('app');
+
+
+  window.addEventListener('resize', resizeCanvas, false);
+
+  function resizeCanvas() {
+    canvas.setHeight($('#cancha').height()); canvas.setWidth($('#cancha').width());
+    canvas.renderAll();
+  }
+
+  // resize on init
+  resizeCanvas();
+})();
