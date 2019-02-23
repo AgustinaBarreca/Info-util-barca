@@ -1,0 +1,104 @@
+
+ 					<li><img class="imgDrag" draggable="true" src="imgs/dragg/zigzag.png"><h3>Flecha Zigzag</h3></li>
+ 				</ul>
+ 				<ul class="menu_desplegable_myText desactive">
+-					<li><img class="imgDrag" draggable="true" src="imgs/dragg/text-box.png"><h3>Insertar Texto</h3></li>
++					<li><img id="editar" class="imgDrag" draggable="true" src="imgs/dragg/text-box.png"><h3>Insertar Texto</h3></li>
+ 				</ul>
+ 			</div>
+ 		</nav>
+File js/dragAndDrop.js MODIFIED
+  Side-by-side diff  View file   Comment   More
+ 
+ //    DRAG AND DROP    //
+ 
++var flagEditar = false;
++
+ function handleDragStart(e) {
+   $('.imgDrag').removeClass('img_dragging');
+-  
++    if (e.target.id === "editar"){
++      flagEditar = true;
++    } else {
++      flagEditar = false;
++    }
+   this.classList.add('img_dragging');
+ }
+ 
+ 
+   e.dataTransfer.dropEffect = 'copy'; // See the section on the DataTransfer object.
+   // NOTE: comment above refers to the article (see top) -natchiketa
+-  
+   return false;
+ }
+ 
+   if (e.stopPropagation) {
+     e.stopPropagation(); // stops the browser from redirecting.
+   }
+-  
++
+   var img = document.querySelector('img.img_dragging');
+-  
+-  var newImage = new fabric.Image(img, {
++
++  if(flagEditar) {
++    agregarTexto(e.layerX, e.layerY);
++    } else {
++    var newImage = new fabric.Image(img, {
+       left: e.layerX,
+       top: e.layerY
+     });
+-    canvas.add(newImage);
+-    
+-    return false;
++      canvas.add(newImage);
++      return false;
++    }
+   }
+   
+   function handleDragEnd(e) {
+   $(" .js flexbox flexboxlegacy canvas canvastext webgl no-touch geolocation postmessage websqldatabase indexeddb hashchange history draganddrop websockets rgba hsla multiplebgs backgroundsize borderimage borderradius boxshadow textshadow opacity cssanimations csscolumns cssgradients cssreflections csstransforms csstransforms3d csstransitions fontface generatedcontent video audio localstorage sessionstorage webworkers applicationcache svg inlinesvg smil svgclippaths").removeClass(" .js flexbox flexboxlegacy canvas canvastext webgl no-touch geolocation postmessage websqldatabase indexeddb hashchange history draganddrop websockets rgba hsla multiplebgs backgroundsize borderimage borderradius boxshadow textshadow opacity cssanimations csscolumns cssgradients cssreflections csstransforms csstransforms3d csstransitions fontface generatedcontent video audio localstorage sessionstorage webworkers applicationcache svg inlinesvg smil svgclippaths");
+   
+   //    AGREGAR CAJA DE TEXTO    //
+-
+-function agregarTexto () {
+-  var t1 = new fabric.Textbox('Escribe aquí', {
+-    width: 150,
+-    top: 5,
+-    left: 5,
+-    fontSize: 16,
+-    textAlign: 'center',
+-    fixedWidth: 150
+-});
+-
+-canvas.on('text:changed', function(opt) {
+-  var t1 = opt.target;
+-  if (t1.width > t1.fixedWidth) {
+-    t1.fontSize *= t1.fixedWidth / (t1.width + 1);
+-    t1.width = t1.fixedWidth;
++  
++  function agregarTexto (layerX , layerY) {
++    var t1 = new fabric.Textbox('Escribe aquí', {
++      width: 150,
++      top: layerY,
++      left: layerX,
++      fontSize: 18,
++      textAlign: 'center',
++      fixedWidth: 150,
++      borderColor: 'red'
++    });
++  
++  canvas.on('text:changed', function(opt) {
++    var t1 = opt.target;
++    if (t1.width > t1.fixedWidth) {
++      t1.fontSize *= t1.fixedWidth / (t1.width + 1);
++      t1.width = t1.fixedWidth;
++    }
++  });
++  
++  canvas.add(t1);
+   }
+-});
+-
+-canvas.add(t1);
+-}
